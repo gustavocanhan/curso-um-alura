@@ -3,24 +3,39 @@ function retornaValor(idHTML) {
   return inputHTML;
 }
 
-function exibirValor(tag, texto) {
-  let labelHTML = document.querySelector(tag);
+function limparValorInput(id){
+  let inputHTML = document.getElementById(id).value = ""
+}
+
+function exibirValorLabel(id, texto) {
+  let labelHTML = document.querySelector(id);
   labelHTML.textContent = texto;
+}
+
+function limparLabel(tag, texto){
+  let labelHTML = document.querySelector(tag)
+  labelHTML.textContent = texto;
+}
+
+function alterarStatusBotao(id){
+  let buttonHTML = document.getElementById(id)
+  if (buttonHTML.classList.contains("container__botao-desabilitado")){
+    buttonHTML.classList.remove("container__botao-desabilitado")
+    buttonHTML.classList.add("container__botao")
+  } else{
+    buttonHTML.classList.remove("container__botao")
+    buttonHTML.classList.add("container__botao-desabilitado")
+  }
 }
 
 function gerarNumeroAleatorio(min, max, quantidade) {
   let listaNumerosAleatorios = [];
-  let contador = 0;
 
   while (listaNumerosAleatorios.length != quantidade) {
-    let numeroAleatorio = Math.floor(Math.random() * max + 1);
+    let numeroAleatorio = Math.floor(Math.random() * (max - min + 1) + min);
 
-    if (
-      numeroAleatorio >= min &&
-      !listaNumerosAleatorios.includes(numeroAleatorio)
-    ) {
+    if (numeroAleatorio >= min && !(listaNumerosAleatorios.includes(numeroAleatorio))) {
       listaNumerosAleatorios.push(numeroAleatorio);
-      contador++;
     }
   }
 
@@ -35,12 +50,26 @@ function sortear() {
   let numerosSorteados = [];
   numerosSorteados = gerarNumeroAleatorio(valorMinimo, valorMaximo, quantidade);
 
+  console.log(quantidade)
+  console.log(valorMinimo)
+  console.log(valorMaximo)
+  console.log(numerosSorteados)
+
   mensagem = `Números sorteados: ${numerosSorteados}`;
 
-  exibirValor("#resultado label", mensagem);
+  exibirValorLabel("#resultado label", mensagem);
 
-  console.log(quantidade);
-  console.log(valorMinimo);
-  console.log(valorMaximo);
-  console.log(numerosSorteados);
+  alterarStatusBotao("btn-reiniciar")
+  alterarStatusBotao("btn-sortear")
+}
+
+function reiniciar(){
+  alterarStatusBotao("btn-reiniciar")
+  alterarStatusBotao("btn-sortear")
+
+  limparValorInput("quantidade")
+  limparValorInput("de")
+  limparValorInput("ate")
+
+  limparLabel("#resultado label", "Números sorteados: nenhum até agora")
 }
